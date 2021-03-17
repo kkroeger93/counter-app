@@ -1,22 +1,6 @@
 import React, { Component } from 'react';
 
 class Counter extends Component {
-    state = {
-        count: this.props.counter.value,
-    };
-
-    /*constructor() {
-        super();
-        // Method one, for making "this" accessible
-        //this.handleIncrement = this.handleIncrement.bind(this);
-    }*/
-
-    // Methode two, for making "this" accessible:
-    // By chaninging the Class Methode into a arrow function method.
-    handleIncrement = () => {
-        this.setState({ count: this.state.count + 1 });
-    };
-
     render() {
         return (
             <div>
@@ -24,7 +8,11 @@ class Counter extends Component {
                     {this.formatCount()}
                 </span>
                 <button
-                    onClick={this.handleIncrement}
+                    onClick={() =>
+                        //NOTE pass whole counter instead of only the id, bacause this makes it easier to
+                        //modify the state in the parent component.
+                        this.props.onIncrement(this.props.counter)
+                    }
                     // NOTE Rules for "this":
                     // Inside "obj.method" this => refferce to => current object
                     // Inside a function() this => refferce to => window, gloabl object
@@ -47,13 +35,13 @@ class Counter extends Component {
 
     getBadgeClasses() {
         let classes = 'badge m-2 badge-';
-        classes += this.state.count === 0 ? 'warning' : 'primary';
+        classes += this.props.counter === 0 ? 'warning' : 'primary';
         return classes;
     }
 
     formatCount() {
-        const { count } = this.state;
-        return count === 0 ? 'Zero' : count;
+        const { value } = this.props.counter;
+        return value === 0 ? 'Zero' : value;
     }
 }
 

@@ -11,12 +11,12 @@ class Counters extends Component {
         ],
     };
 
-    handleReset = () => {
-        const counters = this.state.counters.map((c) => {
-            c.value = 0;
-            return c;
-        });
-        this.setState({ counters });
+    handleIncrement = (counter) => {
+        //clone array of existing counters (!!!clones by refference!!!)
+        const counters = [...this.state.counters];
+        //NOTE BIG NO-NO in React, never change the State directly, instead use setState Method!!
+        counters[0].value++;
+        console.log(this.state.counters[0]);
     };
 
     handleDelete = (counterId) => {
@@ -40,6 +40,7 @@ class Counters extends Component {
                         key={counter.id}
                         counter={counter}
                         onDelete={this.handleDelete}
+                        onIncrement={this.handleIncrement}
                     />
                 ))}
             </div>
