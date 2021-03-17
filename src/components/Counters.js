@@ -12,11 +12,21 @@ class Counters extends Component {
     };
 
     handleIncrement = (counter) => {
-        //clone array of existing counters (!!!clones by refference!!!)
+        //NOTE 1. clone array of existing counters (!!!clones by refference!!!)
         const counters = [...this.state.counters];
-        //NOTE BIG NO-NO in React, never change the State directly, instead use setState Method!!
-        counters[0].value++;
-        console.log(this.state.counters[0]);
+
+        //NOTE 2. First reference the right object refference
+        // at the "counters" array index given by "counter")
+        const index = counters.indexOf(counter);
+
+        //NOTE 3. Reference the resulting "counter" inside the given index of "counters" array
+        counters[index] = { ...counter };
+
+        //Increment the value of counter by one
+        counters[index].value++;
+
+        // Update the State
+        this.setState({ counters });
     };
 
     handleDelete = (counterId) => {
